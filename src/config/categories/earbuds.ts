@@ -1,0 +1,88 @@
+import type { NormalizationConfig } from '@/types/scoring'
+
+export const EARBUDS_CONFIG: NormalizationConfig = {
+  price: {
+    type: 'log_inverted',
+    min: 500,
+    max: 30000,
+    display_name: 'Price',
+    description: 'Current market price',
+    unit: '₹',
+  },
+  battery_hours: {
+    type: 'linear',
+    min: 4,
+    max: 12,
+    higher_is_better: true,
+    display_name: 'Earbud Battery',
+    description: 'Battery life per charge (earbuds only)',
+    unit: 'hrs',
+  },
+  total_battery_hours: {
+    type: 'linear',
+    min: 12,
+    max: 48,
+    higher_is_better: true,
+    display_name: 'Total Battery (with Case)',
+    description: 'Total battery life including charging case',
+    unit: 'hrs',
+  },
+  anc: {
+    type: 'binary',
+    display_name: 'Active Noise Cancellation',
+    description: 'Active noise cancellation feature',
+  },
+  anc_level: {
+    type: 'tier',
+    mapping: { none: 0, basic: 0.4, good: 0.7, excellent: 1.0 },
+    display_name: 'ANC Quality',
+    description: 'Quality of active noise cancellation',
+  },
+  transparency_mode: {
+    type: 'binary',
+    display_name: 'Transparency Mode',
+    description: 'Hear ambient sounds through earbuds',
+  },
+  driver_mm: {
+    type: 'linear',
+    min: 6,
+    max: 15,
+    higher_is_better: true,
+    display_name: 'Driver Size',
+    description: 'Speaker driver diameter',
+    unit: 'mm',
+  },
+  multipoint: {
+    type: 'binary',
+    display_name: 'Multipoint Connection',
+    description: 'Connect to two devices simultaneously',
+  },
+  ipx_rating: {
+    type: 'tier',
+    mapping: { none: 0, IPX2: 0.3, IPX4: 0.6, IPX5: 0.8, IPX7: 1.0 },
+    display_name: 'Water Resistance',
+    description: 'Water and sweat resistance rating',
+  },
+  codec: {
+    type: 'tier',
+    mapping: { SBC: 0.3, AAC: 0.6, aptX: 0.7, aptX_HD: 0.85, LDAC: 1.0, aptX_Lossless: 1.0 },
+    display_name: 'Audio Codec',
+    description: 'Highest supported Bluetooth audio codec',
+  },
+  latency_ms: {
+    type: 'inverted',
+    min: 20,
+    max: 200,
+    display_name: 'Latency',
+    description: 'Audio latency (lower is better for gaming)',
+    unit: 'ms',
+  },
+  weight_g: {
+    type: 'inverted',
+    min: 3,
+    max: 12,
+    display_name: 'Earbud Weight',
+    description: 'Per-earbud weight',
+    unit: 'g',
+  },
+}
