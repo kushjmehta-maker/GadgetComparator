@@ -7,7 +7,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.supabase.co' },
     ],
   },
-  serverExternalPackages: ['@anthropic-ai/sdk'],
+  serverExternalPackages: ['openai'],
 };
 
 module.exports = nextConfig;

@@ -1,24 +1,39 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { AzureOpenAI } from 'openai'
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+let _client: AzureOpenAI | null = null
+
+function getClient(): AzureOpenAI {
+  if (!_client) {
+    _client = new AzureOpenAI({
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
+      apiKey: process.env.AZURE_OPENAI_API_KEY!,
+      apiVersion: process.env.AZURE_OPENAI_API_VERSION ?? '2025-01-01-preview',
+    })
+  }
+  return _client
+}
+
+const MODEL = process.env.AZURE_OPENAI_DEPLOYMENT ?? 'gpt-5.4-pro'
 
 export async function claudeJSON<T>(
   prompt: string,
   systemPrompt?: string,
 ): Promise<T> {
-  const response = await client.messages.create({
-    model: 'claude-opus-4-6',
+  const response = await getClient().chat.completions.create({
+    model: MODEL,
     max_tokens: 2048,
-    system:
-      systemPrompt ??
-      'You are a helpful AI assistant. Always respond with valid JSON only.',
-    messages: [{ role: 'user', content: prompt }],
+    messages: [
+      {
+        role: 'system',
+        content:
+          systemPrompt ??
+          'You are a helpful AI assistant. Always respond with valid JSON only.',
+      },
+      { role: 'user', content: prompt },
+    ],
   })
 
-  const text =
-    response.content[0].type === 'text' ? response.content[0].text : ''
+  const text = response.choices[0]?.message?.content ?? ''
 
   // Strip any markdown code fences if present
   const cleaned = text
@@ -33,14 +48,19 @@ export async function claudeText(
   prompt: string,
   systemPrompt?: string,
 ): Promise<string> {
-  const response = await client.messages.create({
-    model: 'claude-opus-4-6',
+  const response = await getClient().chat.completions.create({
+    model: MODEL,
     max_tokens: 1024,
-    system: systemPrompt ?? 'You are a helpful AI assistant.',
-    messages: [{ role: 'user', content: prompt }],
+    messages: [
+      {
+        role: 'system',
+        content: systemPrompt ?? 'You are a helpful AI assistant.',
+      },
+      { role: 'user', content: prompt },
+    ],
   })
 
-  return response.content[0].type === 'text' ? response.content[0].text : ''
+  return response.choices[0]?.message?.content ?? ''
 }
 
-export { client as anthropic }
+export { getClient as anthropic }

@@ -8,7 +8,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?logo=tailwindcss)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ecf8e?logo=supabase)
-![Claude](https://img.shields.io/badge/Claude-Anthropic-d97706?logo=anthropic)
+![Azure OpenAI](https://img.shields.io/badge/Azure_OpenAI-gpt--5.4--pro-0078d4?logo=microsoftazure)
 
 ---
 
@@ -32,7 +32,7 @@ Two modes:
 |-------|-----------|
 | Frontend | Next.js 15 (App Router), TypeScript |
 | Styling | Tailwind CSS, shadcn/ui, Framer Motion |
-| AI | Claude API (`claude-opus-4-6`) via `@anthropic-ai/sdk` |
+| AI | Azure OpenAI (`gpt-5.4-pro`) via `openai` SDK |
 | Database | Supabase (PostgreSQL + Row Level Security) |
 | Cache | Vercel KV (Redis) |
 | State | Zustand |
@@ -112,10 +112,11 @@ Fill in `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
-ANTHROPIC_API_KEY=sk-ant-...
-NEXT_PUBLIC_POSTHOG_KEY=phc_...   # optional
-KV_REST_API_URL=...               # optional, for caching
-KV_REST_API_TOKEN=...             # optional
+AZURE_OPENAI_ENDPOINT=https://YOUR-RESOURCE.openai.azure.com
+AZURE_OPENAI_API_KEY=your_key_here
+AZURE_OPENAI_DEPLOYMENT=gpt-5.4-pro
+AZURE_OPENAI_API_VERSION=2025-01-01-preview
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ### 3. Set up the database
